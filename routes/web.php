@@ -13,7 +13,11 @@ Route::get('/', function () {
     });
 
 
-    dump($token);
+    dump(
+//        \App\Services\ConnectService::make($token)->sites(),
+//        \App\Services\ConnectService::make($token)->devices(),
+        \App\Services\ConnectService::make($token)->deviceStatus(98102),
+    );
 
 
 //    $service = new \App\Services\ConnectService();
