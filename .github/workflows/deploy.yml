@@ -1,4 +1,4 @@
-name: Prod Deploy MS-Free-Daily
+name: Prod CAME-Connect
 
 on:
   push:
