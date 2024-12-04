@@ -65,12 +65,37 @@ class ConnectService
 
     public function sync(): static
     {
-        if (empty($this->sites)) $this->sites();
+        if ($this->sites->isEmpty()) $this->sites();
         $this->sites->each(function ($site) {
-            Site::updateOrCreate(
+
+            // site sync
+            $localSite = Site::updateOrCreate(
                 ['id' => $site->Id],
-                ['id' => $site->Id, 'user_id' => $this->user->id,'name' => $site->Name, 'description' => $site->Description, 'timezone' => $site->Timezone]
+                ['id' => $site->Id, 'user_id' => $this->user->id, 'name' => $site->Name, 'description' => $site->Description, 'timezone' => $site->Timezone]
             );
+
+            // devices sync
+            collect($site->Devices)
+                ->each(function ($device) use (&$localSite) {
+                    $localSite->devices()->updateOrCreate(
+                        ['id' => $device->Id],
+                        [
+                            'id' => $device->Id,
+                            'name' => $device->Name,
+                            'description' => $device->Description,
+                            'parent_id' => $device->ParentId,
+                            'model_id' => $device->ModelId,
+                            'model_description' => $device->ModelDescription,
+                            'model_name' => $device->ModelName,
+                            'key_code' => $device->Keycode,
+                            'icon' => $device->IconName,
+                            'inputs' => $device->LocalInputs,
+                            'outputs' => $device->LocalOutputs,
+                            'max_remotes' => $device->RemotesMax,
+                        ]
+                    );
+                });
+
         });
         return $this;
     }

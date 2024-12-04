@@ -8,7 +8,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('sites', function (Blueprint $table) {
-            $table->integer('id')->unique()->unsigned();
+            $table->unsignedBigInteger('id')->primary()->unique();
             $table->foreignIdFor(\App\Models\User::class)->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->string('description')->nullable();
