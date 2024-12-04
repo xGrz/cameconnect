@@ -4,20 +4,32 @@ namespace App\Services;
 
 use App\Enums\Endpoints;
 use App\Exceptions\ConnectException;
+use App\Models\Site;
+use App\Models\User;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 
-readonly class ConnectService
+class ConnectService
 {
+    private User $user;
+    private Collection $sites;
+    private string $bearerToken;
 
-    private function __construct(private string $bearerToken)
+    private function __construct(User $user)
     {
+        $this->user = $user;
+        try {
+            $this->bearerToken = $user->getBearerToken();
+        } catch (ConnectionException|ConnectException $e) {
+            $user->forgetBearerToken();
+        }
+        $this->sites = collect();
     }
 
-    public static function make(string $bearerToken): self
+    public static function make(User $user): self
     {
-        return new self($bearerToken);
+        return new self($user);
     }
 
     /**
@@ -30,6 +42,7 @@ readonly class ConnectService
         }
 
         $request = Http::withToken($this->bearerToken)
+            ->withUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36')
             ->acceptJson()
             ->get($url);
 
@@ -42,10 +55,24 @@ readonly class ConnectService
         return $request->object()->Data;
     }
 
-    public function sites()
+    public function sites(): Collection
     {
-        $sites = $this->apiGET(Endpoints::SITES);
-        return $sites;
+        if ($this->sites->isEmpty()) {
+            $this->sites = collect($this->apiGET(Endpoints::SITES));
+        }
+        return $this->sites;
+    }
+
+    public function sync(): static
+    {
+        if (empty($this->sites)) $this->sites();
+        $this->sites->each(function ($site) {
+            Site::updateOrCreate(
+                ['id' => $site->Id],
+                ['id' => $site->Id, 'user_id' => $this->user->id,'name' => $site->Name, 'description' => $site->Description, 'timezone' => $site->Timezone]
+            );
+        });
+        return $this;
     }
 
 
