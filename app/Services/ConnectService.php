@@ -3,12 +3,15 @@
 namespace App\Services;
 
 use App\Enums\Endpoints;
+use App\Exceptions\ConnectException;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 
-class ConnectService
+readonly class ConnectService
 {
-    private function __construct(private readonly string $bearerToken)
+
+    private function __construct(private string $bearerToken)
     {
     }
 
@@ -17,32 +20,38 @@ class ConnectService
         return new self($bearerToken);
     }
 
-    private function callGet(Endpoints $url, array $params = []): string
+    /**
+     * @throws ConnectionException
+     */
+    private function apiGET(Endpoints|string $url)
     {
-        $url = $url->value;
-        if ($params !== []) {
-            $url = str($url)->replace(array_keys($params), array_values($params))->toString();
+        if (!is_string($url)) {
+            $url = $url->value;
         }
 
-        return Http::withHeaders([
-            'Authorization' => 'Bearer ' . $this->bearerToken,
-        ])->get($url);
+        $request = Http::withToken($this->bearerToken)
+            ->acceptJson()
+            ->get($url);
+
+        if ($request->getStatusCode() !== 200) {
+            throw new ConnectException($request->getStatusCode());
+        }
+        if (!$request->object()->Success) {
+            throw new ConnectException($request->getStatusCode());
+        }
+        return $request->object()->Data;
     }
 
     public function sites()
     {
-        return $this->callGet(Endpoints::SITES)->object()?->Data[0];
+        $sites = $this->apiGET(Endpoints::SITES);
+        return $sites;
     }
 
-    public function devices(): Collection
-    {
-        return collect($this->sites()->Devices);
-    }
 
     public function deviceStatus(array|int $ids)
     {
-        if (is_array($ids)) $ids = join(',', $ids);
-        return json_decode($this->callGet(Endpoints::DEVICE_STATUS, ['DEVICE_IDS' => $ids]));
+        return json_decode($this->apiGET(Endpoints::DEVICE_STATUS->devices($ids)));
     }
 
 
