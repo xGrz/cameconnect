@@ -1,4 +1,4 @@
-name: Prod CAME-Connect
+name: Deploy Prod CAME-Connect
 
 on:
   push:
