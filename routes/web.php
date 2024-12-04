@@ -13,5 +13,5 @@ Route::get('/', function () {
     });
 
 
-    return \App\Services\ConnectService::make($token)->devices();
+    return \App\Services\ConnectService::make($token)->sites();
 });
