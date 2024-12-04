@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return 'came-connect-overlay';
+    return 'came-connect-api';
     return \App\Services\ConnectService::make(\App\Models\User::first())->sendCommand(98101, 2);
 });
 
