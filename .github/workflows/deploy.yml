@@ -1,0 +1,66 @@
+name: Prod Deploy MS-Free-Daily
+
+on:
+  push:
+    branches:
+      - main
+    pull_requests:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+
+      - name: Install Composer Dependencies
+        run: composer install -q --no-dev --no-progress --no-interaction --prefer-dist --no-scripts --no-ansi
+
+      - name: Composer dump-autoload
+        run: composer dump-autoload
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install NPM Dependencies
+        run: npm install
+
+      - name: Build NPM Assets
+        run: npm run build
+
+      - name: Remove node modules
+        run: rm -r node_modules/
+
+      - name: Synchronize Files To Server
+        uses: easingthemes/ssh-deploy@v2.1.5
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SOURCE: "."
+          REMOTE_HOST: ${{ secrets.VPS_HOST }}
+          REMOTE_USER: ${{ secrets.VPS_USER }}
+          REMOTE_PORT: ${{ secrets.VPS_PORT }}
+          EXCLUDE: "./node_modules/"
+          TARGET: "/home/platne/bramstal/public_html/connect.bramstal.pl"
+
+      - name: Run remote artisan commands
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+            cd /home/platne/bramstal/public_html/connect.bramstal.pl
+            /usr/local/php82-fpm/bin/php artisan optimize:clear
+            /usr/local/php82-fpm/bin/php artisan migrate --force
+            /usr/local/php82-fpm/bin/php artisan optimize
+

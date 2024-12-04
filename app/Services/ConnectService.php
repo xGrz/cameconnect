@@ -2,8 +2,11 @@
 
 namespace App\Services;
 
+use App\DTO\DeviceCommand;
+use App\DTO\DeviceStatus;
 use App\Enums\Endpoints;
 use App\Exceptions\ConnectException;
+use App\Models\Device;
 use App\Models\Site;
 use App\Models\User;
 use Illuminate\Http\Client\ConnectionException;
@@ -37,9 +40,7 @@ class ConnectService
      */
     private function apiGET(Endpoints|string $url)
     {
-        if (!is_string($url)) {
-            $url = $url->value;
-        }
+        if (!is_string($url)) $url = $url->value;
 
         $request = Http::withToken($this->bearerToken)
             ->withUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36')
@@ -53,6 +54,16 @@ class ConnectService
             throw new ConnectException($request->getStatusCode());
         }
         return $request->object()->Data;
+    }
+
+    private function apiPOST(Endpoints|string $url)
+    {
+        $request = Http::withToken($this->bearerToken)
+            ->acceptJson()
+            ->withUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36')
+            ->post($url);
+        return $request->object();
+
     }
 
     public function sites(): Collection
@@ -101,10 +112,30 @@ class ConnectService
     }
 
 
-    public function deviceStatus(array|int $ids)
+    public function deviceStatus(array|int $ids): Collection
     {
-        return json_decode($this->apiGET(Endpoints::DEVICE_STATUS->devices($ids)));
+        $statuses = collect();
+        $liveStates = collect($this->apiGET(Endpoints::DEVICE_STATUS->devices($ids)));
+        $liveStates->each(function ($state) use ($statuses) {
+            $statuses->push(DeviceStatus::make($state));
+        });
+
+        return $statuses;
     }
 
 
+    public function commands(int $id)
+    {
+        $commands = collect($this->apiGET(Endpoints::DEVICE_COMMANDS->device($id))->Commands);
+        return $commands->map(function ($command) use ($id) {
+            return DeviceCommand::id($id, $command);
+        });
+    }
+
+    public function sendCommand(Device|int $device, int $commandId)
+    {
+        $device = $device instanceof Device ? $device->id : $device;
+        return $this->apiPOST(Endpoints::SEND_COMMAND->command($device, $commandId));
+
+    }
 }
