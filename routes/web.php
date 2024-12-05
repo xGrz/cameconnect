@@ -2,10 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return 'came-connect-api';
-    return \App\Services\ConnectService::make(\App\Models\User::first())->sendCommand(98101, 2);
-});
+Route::get('/', \App\Http\Controllers\HomeController::class)->name('home');
 
 //Route::get('open-gate', function () {
 //    return \App\Services\ConnectService::make(\App\Models\User::first())->sendCommand(98101, 2);
