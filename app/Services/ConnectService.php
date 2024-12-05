@@ -38,7 +38,7 @@ class ConnectService
     /**
      * @throws ConnectionException
      */
-    private function apiGET(Endpoints|string $url)
+    private function apiGET(Endpoints|string $url, array $params = []): mixed
     {
         if (!is_string($url)) $url = $url->value;
 
@@ -116,6 +116,7 @@ class ConnectService
     {
         $statuses = collect();
         $liveStates = collect($this->apiGET(Endpoints::DEVICE_STATUS->devices($ids)));
+        return $liveStates;
         $liveStates->each(function ($state) use ($statuses) {
             $statuses->push(DeviceStatus::make($state));
         });
