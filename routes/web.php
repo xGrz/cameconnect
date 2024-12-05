@@ -7,6 +7,6 @@ Route::get('/', function () {
     return \App\Services\ConnectService::make(\App\Models\User::first())->sendCommand(98101, 2);
 });
 
-Route::get('open-gate', function () {
-    return \App\Services\ConnectService::make(\App\Models\User::first())->sendCommand(98101, 2);
-});
+//Route::get('open-gate', function () {
+//    return \App\Services\ConnectService::make(\App\Models\User::first())->sendCommand(98101, 2);
+//});
