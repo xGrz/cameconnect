@@ -12,8 +12,10 @@ class OpenMyGateController extends Controller
     public function __invoke(Request $request)
     {
 
+        if (empty(config('cameconnect.myGateToken'))) return response('AppConfig missing', 401);
         if (!$request->hasHeader('Token')) return response('Not Found', 404);
-        if ($request->header('Token') !== 'Bearer 03083fd7e1955492c23553a03784fb8c') return response('Unauthorized', 401);
+        if ($request->header('Token') !== 'Bearer ' . config('cameconnect.myGateToken')) return response('Unauthorized', 401);
+
         return ConnectService::make(User::first())->sendCommand(98101, IODeviceCommand::CLICK->value);
     }
 }
