@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\v1\ExecuteDeviceCommandController;
 use App\Http\Controllers\Api\v1\GetDeviceStatusController;
 use App\Http\Controllers\Api\v1\SyncAccountController;
+use App\Http\Controllers\OpenMyGateController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -12,7 +13,7 @@ Route::prefix('account')
         Route::get('sync', SyncAccountController::class)->name('sync');
     });
 
-Route::post('open-my-gate', \App\Http\Controllers\OpenMyGateController::class)->name('openMyGate');
+Route::post('open-my-gate', OpenMyGateController::class)->name('openMyGate');
 
 Route::prefix('device')
     ->name('device.')

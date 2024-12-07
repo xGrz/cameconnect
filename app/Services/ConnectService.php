@@ -2,8 +2,6 @@
 
 namespace App\Services;
 
-use App\DTO\DeviceCommand;
-use App\DTO\DeviceStatus;
 use App\Enums\Endpoints;
 use App\Exceptions\ConnectException;
 use App\Models\Device;
@@ -114,23 +112,13 @@ class ConnectService
 
     public function deviceStatus(array|int $ids): Collection
     {
-        $statuses = collect();
-        $liveStates = collect($this->apiGET(Endpoints::DEVICE_STATUS->devices($ids)));
-        return $liveStates;
-        $liveStates->each(function ($state) use ($statuses) {
-            $statuses->push(DeviceStatus::make($state));
-        });
-
-        return $statuses;
+        return collect($this->apiGET(Endpoints::DEVICE_STATUS->devices($ids)));
     }
 
 
-    public function commands(int $id)
+    public function commands(int $id): Collection
     {
-        $commands = collect($this->apiGET(Endpoints::DEVICE_COMMANDS->device($id))->Commands);
-        return $commands->map(function ($command) use ($id) {
-            return DeviceCommand::id($id, $command);
-        });
+        return collect($this->apiGET(Endpoints::DEVICE_COMMANDS->device($id))->Commands);
     }
 
     public function sendCommand(Device|int $device, int $commandId)

@@ -1,0 +1,34 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "module": "ESNext",
+        "moduleResolution": "bundler",
+        "jsx": "react-jsx",
+        "strict": true,
+        "isolatedModules": true,
+        "target": "ESNext",
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "noEmit": true,
+        "lib": [
+            "ES6",
+            "dom"
+        ],
+        "paths": {
+            "@/*": [
+                "./resources/js/*"
+            ]
+        },
+        "types": [
+            "vite/client",
+            "node",
+            "@inertiajs/react",
+            "@mui/material"
+        ]
+    },
+    "include": [
+        "resources/js/**/*.ts",
+        "resources/js/**/*.tsx",
+        "resources/js/**/*.d.ts"
+    ]
+}
