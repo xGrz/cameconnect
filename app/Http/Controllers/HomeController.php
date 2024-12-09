@@ -11,7 +11,7 @@ class HomeController extends Controller
     public function __invoke()
     {
         return Inertia::render('Home', [
-            'data' => ConnectService::make(User::first())->sites()
+            'sites' => ConnectService::make(User::first())->sites(),
         ]);
     }
 }

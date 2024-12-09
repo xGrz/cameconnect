@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\Api\v1\ExecuteDeviceCommandController;
-use App\Http\Controllers\Api\v1\GetDeviceStatusController;
 use App\Http\Controllers\Api\v1\SyncAccountController;
 use App\Http\Controllers\OpenMyGateController;
 use Illuminate\Support\Facades\Route;
@@ -15,22 +13,26 @@ Route::prefix('account')
 
 Route::post('open-my-gate', OpenMyGateController::class)->name('openMyGate');
 
-Route::prefix('device')
-    ->name('device.')
-    ->group(function () {
-
-        Route::name('status')
-            ->get('status', GetDeviceStatusController::class);
-
-        Route::name('command.')
-            ->prefix('command')
-            ->group(function () {
-                Route::get('open-gate', ExecuteDeviceCommandController::class)->name('open_gate');
-            });
-
-    });
 
 
 
-
-
+//
+//Route::prefix('device')
+//    ->name('device.')
+//    ->group(function () {
+//
+//        Route::name('status')
+//            ->get('status', GetDeviceStatusController::class);
+//
+//        Route::name('command.')
+//            ->prefix('command')
+//            ->group(function () {
+//                Route::get('open-gate', ExecuteDeviceCommandController::class)->name('open_gate');
+//            });
+//
+//    });
+//
+//
+//
+//
+//
