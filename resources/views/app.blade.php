@@ -11,12 +11,11 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet"/>
 
     <!-- Styles / Scripts -->
-    @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-        @vite('resources/js/app.tsx')
-        @inertiaHead
-    @endif
+    @vite('resources/js/app.tsx')
+    @inertiaHead
+    @routes
 </head>
 <body id="root">
-    @inertia
+@inertia
 </body>
 </html>

@@ -14,7 +14,7 @@ Route::middleware([])->group(function () {
 //    Route::get('login', [AuthenticateSessionController::class, 'create'])
 //        ->name('login');
 //
-    Route::post('login', [AuthenticateSessionController::class, 'store'])->name('login');
+    Route::post('auth/login', [AuthenticateSessionController::class, 'store'])->name('login');
 });
 
 
