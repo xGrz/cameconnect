@@ -2,53 +2,45 @@ export interface IBaseResponse extends Record<string, any> {
 
 }
 
-export interface IHomeResponse extends IBaseResponse {
-    sites: ISite[];
-}
-
-interface IConnectUser {
-    Id: number | null;
-    Username: string | null;
-    Email: string | null;
-    FirstName: string | null;
-    LastName: string | null;
-    TechnicianCode: number;
-}
-
-export interface ISite {
-    Id: number;
-    Name: string;
-    Description: string;
-    Address: string;
-    Timezone: string;
-    TechnicianId: number;
-    UserId: number;
-    User: IConnectUser;
-    Devices: IDevice[];
-    DevicesTree: IDeviceTree;
+interface IDeviceStatus {
+    online: boolean,
 }
 
 interface IBaseDevice {
-    Id: number;
-    Name: string;
-    Description: string;
-    IconName: string;
-    ModelId: number;
-    ModelName: string;
-    SiteId: number;
-    OwnerId: number;
-    Keycode: number;
-    Children?: IDevice[];
+    id: number;
+    name: string;
+    description: string;
+    iconName: string;
+    modelId: number;
+    modelName: string;
+    status: IDeviceStatus;
 }
 
-export interface IGateDevice extends IBaseDevice {
+interface ICommand {
+    commandId: number;
+    label: string;
+    outputId: number;
 }
 
-export interface IDevice extends IBaseDevice {
-    AllowedInputs: [];
-
+interface IDevice extends IBaseDevice{
+    devices: IDevice[];
+    commands: ICommand[];
 }
 
-export interface IDeviceTree {
-    Children: IGateDevice[];
+interface IGatewayDevice extends IBaseDevice {
+    devices: IDevice[];
+    iconName: string;
+    keyCode: string;
 }
+
+interface ISite extends IBaseDevice {
+    timezone: string;
+    technicianId: number;
+    devices: IGatewayDevice[];
+    deviceIds: number[];
+}
+
+export interface IHomeResponse extends IBaseResponse {
+    siteList: ISite[];
+}
+

@@ -13,9 +13,13 @@ return Application::configure(basePath: dirname(__DIR__))
         apiPrefix: 'api/v1',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->web(append: [
-            \App\Http\Middleware\HandleInertiaRequests::class,
-        ]);
+        $middleware
+            ->web(append: [
+                \App\Http\Middleware\HandleInertiaRequests::class,
+            ])
+            ->redirectGuestsTo('login')
+            ->redirectUsersTo('dashboard');
+
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

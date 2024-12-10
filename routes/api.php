@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\v1\SendDeviceCommandController;
 use App\Http\Controllers\Api\v1\SyncAccountController;
 use App\Http\Controllers\OpenMyGateController;
 use Illuminate\Support\Facades\Route;
@@ -14,7 +15,7 @@ Route::prefix('account')
 Route::post('open-my-gate', OpenMyGateController::class)->name('openMyGate');
 
 
-
+Route::post('device/{device}/command/{command}', SendDeviceCommandController::class);
 
 //
 //Route::prefix('device')

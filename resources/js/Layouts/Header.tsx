@@ -9,8 +9,8 @@ export default function Header() {
     return (
         <Box sx={{backgroundColor: blue[600], color: 'white'}}>
             <Toolbar>
-                <Typography variant="h6" noWrap component="div">
-                    <strong>CAME</strong> Connect
+                <Typography variant="h6" noWrap component="div" textAlign="center" sx={{flexGrow: 1}}>
+                    <strong>myCAME</strong> Connect
                 </Typography>
             </Toolbar>
         </Box>

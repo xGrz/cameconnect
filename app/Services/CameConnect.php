@@ -2,16 +2,16 @@
 
 namespace App\Services;
 
+use App\DTO\SiteDTO;
 use App\Enums\Endpoints;
 use App\Exceptions\ConnectException;
 use App\Models\Device;
-use App\Models\Site;
 use App\Models\User;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 
-class ConnectService
+class CameConnect
 {
     private User $user;
     private Collection $sites;
@@ -26,6 +26,7 @@ class ConnectService
             $user->forgetBearerToken();
         }
         $this->sites = collect();
+        $this->sites = $this->fetchSites();
     }
 
     public static function make(User $user): self
@@ -33,9 +34,6 @@ class ConnectService
         return new self($user);
     }
 
-    /**
-     * @throws ConnectionException
-     */
     private function apiGET(Endpoints|string $url, array $params = []): mixed
     {
         if (!is_string($url)) $url = $url->value;
@@ -64,7 +62,7 @@ class ConnectService
 
     }
 
-    public function sites(): Collection
+    private function fetchSites(): Collection
     {
         if ($this->sites->isEmpty()) {
             $this->sites = collect($this->apiGET(Endpoints::SITES));
@@ -72,60 +70,38 @@ class ConnectService
         return $this->sites;
     }
 
-    public function sync(): static
+    public function getSites(bool $withStatus = true): Collection
     {
-        if ($this->sites->isEmpty()) $this->sites();
-        $this->sites->each(function ($site) {
-
-            // site sync
-            $localSite = Site::updateOrCreate(
-                ['id' => $site->Id],
-                ['id' => $site->Id, 'user_id' => $this->user->id, 'name' => $site->Name, 'description' => $site->Description, 'timezone' => $site->Timezone]
-            );
-
-            // devices sync
-            collect($site->Devices)
-                ->each(function ($device) use (&$localSite) {
-                    $localSite->devices()->updateOrCreate(
-                        ['id' => $device->Id],
-                        [
-                            'id' => $device->Id,
-                            'name' => $device->Name,
-                            'description' => $device->Description,
-                            'parent_id' => $device->ParentId,
-                            'model_id' => $device->ModelId,
-                            'model_description' => $device->ModelDescription,
-                            'model_name' => $device->ModelName,
-                            'key_code' => $device->Keycode,
-                            'icon' => $device->IconName,
-                            'inputs' => $device->LocalInputs,
-                            'outputs' => $device->LocalOutputs,
-                            'max_remotes' => $device->RemotesMax,
-                        ]
-                    );
-                });
-
-        });
-        return $this;
+        $sites = collect();
+        foreach ($this->sites as $site) {
+            $sites->push(new SiteDTO($site, $withStatus));
+        }
+        return $sites;
     }
 
-
-    public function deviceStatus(array|int $ids): Collection
+    public function getStatus(array|int $ids): Collection
     {
         return collect($this->apiGET(Endpoints::DEVICE_STATUS->devices($ids)));
     }
 
-
-    public function commands(int $id): Collection
+    public function deviceCommands(int $id): Collection
     {
         return collect($this->apiGET(Endpoints::DEVICE_COMMANDS->device($id))->Commands);
     }
 
+    public function automationCommands(int $id): Collection
+    {
+        return collect($this->apiGET(Endpoints::AUTOMATION_COMMANDS->device($id))->Commands);
+    }
 
-    public function sendCommand(Device|int $device, int $commandId)
+    public function sendDeviceCommand(Device|int $device, int $commandId)
     {
         $device = $device instanceof Device ? $device->id : $device;
         return $this->apiPOST(Endpoints::SEND_DEVICE_COMMAND->command($device, $commandId));
+    }
 
+    public function sendAutomationCommand(Device|int $device, int $commandId) {
+        $device = $device instanceof Device ? $device->id : $device;
+        return $this->apiPOST(Endpoints::SEND_AUTOMATION_COMMAND->command($device, $commandId));
     }
 }

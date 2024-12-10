@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Device;
 use App\Models\User;
-use App\Services\ConnectService;
+use App\Services\CameConnect;
 
 class TestLocalController extends Controller
 {
     public function __invoke()
     {
         $user = User::first();
-
-        $c = ConnectService::make($user)->commands(237891);
+        $c = CameConnect::make($user)->getSites();
+        dd($c);
         return $c;
 //
 //

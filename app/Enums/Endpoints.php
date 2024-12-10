@@ -7,10 +7,11 @@ enum Endpoints: string
     const BASE_URL = 'https://app.cameconnect.net/api';
     case SITES = self::BASE_URL . '/sites';
     case DEVICE_STATUS = self::BASE_URL . '/devicestatus?devices=[DEVICE_IDS]';
-
     case DEVICE_COMMANDS = self::BASE_URL . '/multiio/DEVICE_ID/commands';
+    case SEND_DEVICE_COMMAND = self::BASE_URL . '/multiio/DEVICE_ID/commands/COMMAND_ID';
 
-    case SEND_COMMAND = self::BASE_URL . '/multiio/DEVICE_ID/commands/COMMAND_ID';
+    case AUTOMATION_COMMANDS = self::BASE_URL . '/automations/DEVICE_ID/commands';
+    case SEND_AUTOMATION_COMMAND = self::BASE_URL . '/automations/DEVICE_ID/commands/COMMAND_ID';
 
     public function devices(int|array $id): string
     {
