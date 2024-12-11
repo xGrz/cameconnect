@@ -24,7 +24,7 @@ class HomeController extends Controller
 ////        );
 //
 //
-//        return Inertia::render('Home', [
+//        return Inertia::render('Dashboard', [
 //            'siteList' => $siteList,
 //        ]);
 

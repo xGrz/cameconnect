@@ -4,7 +4,7 @@ import {AppProvider} from "@/Providers/AppProvider";
 import {IHomeResponse} from "@/types/inertia";
 import SiteListItem from "@/Components/Connect/SiteListItem";
 
-export default function Home({siteList}: IHomeResponse) {
+export default function Dashboard({siteList}: IHomeResponse) {
 
     return (
         <AppProvider>
