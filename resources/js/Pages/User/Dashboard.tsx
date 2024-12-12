@@ -9,7 +9,7 @@ export default function Dashboard({siteList}: IHomeResponse) {
     return (
         <AppProvider>
             <Container>
-                <List sx={{backgroundColor: 'white'}}>
+                <List>
                     {siteList.map(site => (
                         <SiteListItem key={site.id} site={site}/>
                     ))}

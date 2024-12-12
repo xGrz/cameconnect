@@ -1,5 +1,5 @@
 export interface IBaseResponse extends Record<string, any> {
-
+    isLoggedIn: boolean;
 }
 
 interface IDeviceStatus {

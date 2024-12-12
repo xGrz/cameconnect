@@ -29,8 +29,11 @@ class CameConnect
         $this->sites = $this->fetchSites();
     }
 
-    public static function make(User $user): self
+    public static function make(?User $user = null): self
     {
+        if (empty($user)) {
+            $user = auth()->user() ?? throw new \Exception('User not logged in');
+        }
         return new self($user);
     }
 

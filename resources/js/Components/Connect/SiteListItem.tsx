@@ -1,6 +1,7 @@
 import {ISite} from "@/types/inertia";
 import {List, ListItem, ListItemText} from "@mui/material";
 import GatewayListItem from "@/Components/Connect/GatewayListItem";
+import {blue} from "@mui/material/colors";
 
 interface SiteListItemProps {
     site: ISite;
@@ -9,7 +10,7 @@ interface SiteListItemProps {
 export default function SiteListItem({site}: SiteListItemProps) {
     return (
         <>
-            <ListItem>
+            <ListItem sx={{ background: blue[600]}}>
                 <ListItemText>Site: {site.name}</ListItemText>
             </ListItem>
             {site.devices.length > 0 && (

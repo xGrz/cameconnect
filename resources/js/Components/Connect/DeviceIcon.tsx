@@ -23,7 +23,8 @@ export default function DeviceIcon({iconName, online}: DeviceIconProps) {
             width: '50px',
             height: '50px',
             borderRadius: 50,
-            borderColor: online ? "#009EE0" : "red"
+            borderColor: online ? "#009EE0" : "red",
+            backgroundColor: 'white'
         }
     }
 

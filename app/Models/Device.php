@@ -8,18 +8,22 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Device extends Model
 {
-    public $incrementing = false;
+    protected $fillable = [
+        'user_id',
+        'name',
+        'description',
+        'model_id',
+        'model_name',
+        'icon',
+    ];
 
-    protected $guarded = [];
-
-    public function site(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(Site::class);
+        return $this->belongsTo(User::class);
     }
 
-    public function children(): HasMany
+    public function commands(): HasMany
     {
-        return $this->hasMany(self::class, 'parent_id');
+        return $this->hasMany(Command::class);
     }
-
 }

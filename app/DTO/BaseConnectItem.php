@@ -9,5 +9,5 @@ class BaseConnectItem
     public int $id;
     public string $name;
     public string $description;
-    public Collection $devices;
+    public ?Collection $children = null;
 }
