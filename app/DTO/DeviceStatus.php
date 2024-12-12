@@ -7,7 +7,7 @@ use App\DTO\State\OutputState;
 use App\DTO\State\Command;
 use Illuminate\Support\Collection;
 
-class DeviceStatusDTO
+class DeviceStatus
 {
     public int $id;
     public bool $online;

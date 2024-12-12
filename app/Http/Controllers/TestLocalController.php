@@ -9,10 +9,11 @@ class TestLocalController extends Controller
     public function __invoke()
     {
         $service = Connect::withSites()->withStates();
+
         dump(
-            $service,
-            $service->getSiteList()->first()->devices
+            $service->getSiteList()->first(),
         );
-        return 'ok';
+
+        return 'Success';
     }
 }

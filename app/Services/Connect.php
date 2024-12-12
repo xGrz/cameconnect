@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\DTO\DeviceStatusDTO;
-use App\DTO\SiteDTO;
+use App\DTO\DeviceStatus;
+use App\DTO\Site;
 use App\Enums\Endpoints;
 use Illuminate\Support\Collection;
 
@@ -26,6 +26,12 @@ class Connect extends BaseConnect
         return $this;
     }
 
+
+    public function withoutStates(): static
+    {
+        return app(self::class);
+    }
+
     private function buildStructure(): void
     {
         $this->loadSites();
@@ -38,7 +44,7 @@ class Connect extends BaseConnect
             ->connectSitesResponse
             ->each(fn($site) => $this
                 ->siteList
-                ->push(new SiteDTO($site, $states))
+                ->push(new Site($site, $states))
             );
     }
 
@@ -46,6 +52,16 @@ class Connect extends BaseConnect
     {
         $this->loadSites();
         return collect($this->apiGET(Endpoints::DEVICE_STATUS->devices($this->deviceIdents->toArray())))
-            ->transform(fn($status) => new DeviceStatusDTO($status));
+            ->transform(fn($status) => new DeviceStatus($status));
+    }
+
+    public function deviceCommands(int $id): Collection
+    {
+        return collect($this->apiGET(Endpoints::DEVICE_COMMANDS->device($id))->Commands);
+    }
+
+    public function automationCommands(int $id): Collection
+    {
+        return collect($this->apiGET(Endpoints::AUTOMATION_COMMANDS->device($id))->Commands);
     }
 }
