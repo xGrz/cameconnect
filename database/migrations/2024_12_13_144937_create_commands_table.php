@@ -9,10 +9,10 @@ return new class extends Migration {
     {
         Schema::create('commands', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('device_id');
+            $table->foreignIdFor(\App\Models\User::class)->constrained();
+            $table->integer('device_id');
             $table->string('command_id');
-            $table->boolean('favorite')->default(false);
-            $table->string('label');
+            $table->boolean('is_automation');
             $table->timestamps();
         });
     }

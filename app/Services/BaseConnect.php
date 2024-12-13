@@ -79,7 +79,7 @@ abstract class BaseConnect
         $this->connectSitesResponse = cache()
             ->remember(
                 self::getSitesCacheKey(),
-                10,
+                60,
                 fn() => collect($this->apiGET(Endpoints::SITES))
             );
         $this->collectDevicesIdents();

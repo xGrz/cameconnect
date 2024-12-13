@@ -6,9 +6,6 @@ namespace App\Models;
 use App\Exceptions\ConnectException;
 use App\Services\ConnectLoginService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -61,6 +58,11 @@ class User extends Authenticatable
     private function getCacheKeyForBearerToken(): string
     {
         return 'bearer-token:' . $this->id;
+    }
+
+    public function commands(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Command::class);
     }
 
 }

@@ -43,3 +43,13 @@ interface IDeviceCommand {
     label: string;
 }
 
+interface IFavoriteCommand {
+    command: number;
+    device: number;
+    deviceName: string;
+    deviceDescription: string;
+    iconName: string;
+    isAutomation: boolean;
+    label: string;
+
+}
