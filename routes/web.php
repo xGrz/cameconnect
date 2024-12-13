@@ -37,7 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('device')
         ->name('device.')
         ->group(function () {
-            Route::post('{device}/command/{command}', SendDeviceCommandController::class)->name('command');
+            Route::post('{deviceId}/command/{commandId}/{isAutomation}', SendDeviceCommandController::class)->name('command');
         });
 });
 

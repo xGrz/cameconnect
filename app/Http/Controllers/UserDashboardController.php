@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\CameConnect;
+use App\Services\Connect;
 use Inertia\Inertia;
 
 class UserDashboardController extends Controller
 {
     public function __invoke()
     {
-        $service = CameConnect::make(auth()->user());
-        $siteList = $service->getSites();
+        $service = Connect::withSites();
 
         return Inertia::render('User/Dashboard', [
-            'siteList' => $siteList,
+            'siteList' => $service->getSitesTree(),
         ]);
     }
 }

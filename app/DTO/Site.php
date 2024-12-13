@@ -96,4 +96,17 @@ class Site
         });
     }
 
+    public function toArray(): array
+    {
+        return json_decode(json_encode($this), true);
+    }
+
+    public function toTree(): array
+    {
+        $site = $this->toArray();
+        $site['children'] = $site['devicesTree'];
+        unset($site['devicesList'], $site['commands'], $site['devicesTree']);
+        return $site;
+    }
+
 }

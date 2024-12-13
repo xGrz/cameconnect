@@ -8,10 +8,13 @@ class TestLocalController extends Controller
 {
     public function __invoke()
     {
-        $service = Connect::withSites()->withStates();
+        if (!auth()->check()) {
+            auth()->loginUsingId(1);
+        }
+        $service = Connect::getSitesTree();
 
         dump(
-            $service->getSiteList()->first(),
+            $service,
         );
 
         return 'Success';

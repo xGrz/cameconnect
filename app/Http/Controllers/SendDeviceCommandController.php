@@ -6,9 +6,10 @@ use App\Services\CameConnect;
 
 class SendDeviceCommandController extends Controller
 {
-    public function __invoke(int $device, int $command)
+    public function __invoke(int $deviceId, int $commandId, bool $isAutomation)
     {
-        $status = CameConnect::make(auth()->user())->sendDeviceCommand($device, $command)->Success;
-        return back();
+        $status = $isAutomation
+            ? CameConnect::make(auth()->user())->sendAutomationCommand($deviceId, $commandId)->Success
+            : CameConnect::make(auth()->user())->sendDeviceCommand($deviceId, $commandId)->Success;
     }
 }

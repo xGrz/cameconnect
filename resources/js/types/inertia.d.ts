@@ -2,45 +2,44 @@ export interface IBaseResponse extends Record<string, any> {
     isLoggedIn: boolean;
 }
 
-interface IDeviceStatus {
-    online: boolean,
+
+export interface IHomeResponse extends IBaseResponse {
+    siteList: ISiteTree[];
 }
 
-interface IBaseDevice {
+interface ISiteTree {
     id: number;
     name: string;
     description: string;
+    children: IDeviceTree[];
+}
+
+interface IDeviceTree {
+    categoryId: number;
+    children: IDeviceTree[];
+    commandable: boolean;
+    commands: IDeviceCommand[];
+    description: string;
     iconName: string;
+    id: number;
+    inputs: 0;
+    isAutomation: boolean;
+    keyCode: string;
+    model: number;
     modelId: number;
     modelName: string;
-    status: IDeviceStatus;
+    name: string;
+    online: boolean;
+    outputs: number;
+    parentId: number|null;
+    remotesMax: number;
+    states: any;
 }
 
-interface ICommand {
+interface IDeviceCommand {
     commandId: number;
+    deviceId: number;
+    isAutomation: boolean;
     label: string;
-    outputId: number;
-}
-
-interface IDevice extends IBaseDevice{
-    devices: IDevice[];
-    commands: ICommand[];
-}
-
-interface IGatewayDevice extends IBaseDevice {
-    devices: IDevice[];
-    iconName: string;
-    keyCode: string;
-}
-
-interface ISite extends IBaseDevice {
-    timezone: string;
-    technicianId: number;
-    devices: IGatewayDevice[];
-    deviceIds: number[];
-}
-
-export interface IHomeResponse extends IBaseResponse {
-    siteList: ISite[];
 }
 

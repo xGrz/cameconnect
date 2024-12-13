@@ -20,12 +20,18 @@ class Connect extends BaseConnect
         return $this->siteList;
     }
 
+    public static function getSitesTree(): Collection
+    {
+        return app(self::class)
+            ->getSiteList()
+            ->transform(fn($site) => $site->toTree());
+    }
+
     public function withStates(bool $withStates = true): static
     {
         $this->withStates = $withStates;
         return $this;
     }
-
 
     public function withoutStates(): static
     {
