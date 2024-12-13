@@ -24,7 +24,6 @@ export default function DeviceListItemCommand({command}: DeviceListItemCommandPr
 
     function handleClick(event: React.MouseEvent) {
         event.preventDefault();
-        console.log(command);
         router.post(route('device.command', {
                 commandId: command.commandId,
                 deviceId: command.deviceId,
@@ -35,7 +34,7 @@ export default function DeviceListItemCommand({command}: DeviceListItemCommandPr
                 preserveScroll: true,
                 onStart: () => console.log("device started"),
                 onSuccess: () => console.log("device successfully started"),
-                onError: () => console.log("device failed"),
+                onError: () => console.log("device start failed"),
             });
     }
 

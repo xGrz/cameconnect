@@ -6,6 +6,7 @@ use App\Http\Controllers\SendDeviceCommandController;
 use App\Http\Controllers\Settings\UserSettingsController;
 use App\Http\Controllers\TestLocalController;
 use App\Http\Controllers\UserDashboardController;
+use App\Http\Controllers\UserSitesController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -21,6 +22,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('dashboard', UserDashboardController::class)
         ->name('dashboard');
+
+
+    Route::get('sites', UserSitesController::class)->name('sites');
 
     Route::prefix('settings')
         ->name('settings.')

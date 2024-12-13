@@ -2,8 +2,8 @@ import * as React from 'react';
 import {PropsWithChildren} from 'react';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
-import Header from "@/Layouts/Header";
-import Footer from "@/Layouts/Footer";
+import Header from "@/Layouts/Components/Header";
+import Footer from "@/Layouts/Components/Footer";
 
 
 export default function AppContainer({children}: PropsWithChildren) {
