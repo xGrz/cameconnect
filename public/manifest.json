@@ -1,7 +1,7 @@
 {
-    "name": "Moja Aplikacja",
-    "short_name": "myCAME Connect",
-    "description": "To jest przykładowa aplikacja PWA.",
+    "name": "myCAMEConnect",
+    "short_name": "myConnect",
+    "description": "CAME Connect application",
     "icons": [
         {
             "src": "/images/icon-192x192.png",
@@ -17,5 +17,5 @@
     "start_url": "/",
     "display": "fullscreen",
     "background_color": "#ffffff",
-    "theme_color": "#0000ff"
+    "theme_color": "#1E88E5"
 }
