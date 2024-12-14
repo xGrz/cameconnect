@@ -1,7 +1,7 @@
 import {List, ListItem} from "@mui/material";
 import React from "react";
 import {IFavoriteCommand} from "@/types/inertia";
-import {usePage, usePoll} from "@inertiajs/react";
+import {usePage} from "@inertiajs/react";
 import {PageProps} from '@inertiajs/core';
 
 interface DashboardCommandsProps extends PageProps {
