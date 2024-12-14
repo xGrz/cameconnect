@@ -11,7 +11,10 @@ class UserDashboardController extends Controller
     {
 
         return Inertia::render('User/Dashboard', [
-            'commands' => Connect::favoriteCommands()
+            'commands' => Inertia::defer(
+                fn() => Connect::favoriteCommands(),
+
+            )
         ]);
     }
 }

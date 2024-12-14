@@ -9,10 +9,8 @@ class UserSitesController extends Controller
 {
     public function __invoke()
     {
-        $service = Connect::withSites()->withStates();
-
         return Inertia::render('User/SitesTreeView', [
-            'siteList' => $service->getSitesTree(),
+            'siteList' => Connect::withSites()->withStates()->getSitesTree(),
         ]);
     }
 }

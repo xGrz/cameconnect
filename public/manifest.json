@@ -1,7 +1,7 @@
 {
     "name": "myCAMEConnect",
     "short_name": "myConnect",
-    "description": "CAME Connect application",
+    "description": "CAME Connect App",
     "icons": [
         {
             "src": "/images/icon-192x192.png",

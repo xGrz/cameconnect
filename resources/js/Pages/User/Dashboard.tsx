@@ -1,25 +1,26 @@
 import React from "react";
-import {Container, List, ListItem} from "@mui/material";
+import {Container} from "@mui/material";
 import {AppProvider} from "@/Providers/AppProvider";
-import {IFavoriteCommand} from "@/types/inertia";
+import {Deferred} from "@inertiajs/react";
+import DashboardCommands from "@/Pages/DashboardCommands";
+import Loading from "@/Components/Loading";
 
-interface DashboardProps {
-    commands: IFavoriteCommand[];
-}
+export default () => {
 
-export default function Dashboard({commands}: DashboardProps) {
-
-    console.log(commands);
     return (
         <AppProvider>
             <Container>
-                CAME Connect Dashboard
-                <List>
-                    {commands.map((command, index) => (
-                        <ListItem key={index}>{command.deviceName} {command.label}</ListItem>
-                    ))}
-                </List>
+                <div>CAME Connect Dashboard</div>
+                <Deferred
+                    data={"commands"}
+                    fallback={<Loading/>}
+                >
+                    <DashboardCommands/>
+                </Deferred>
             </Container>
         </AppProvider>
     );
 }
+
+
+
