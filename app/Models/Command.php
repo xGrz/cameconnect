@@ -7,22 +7,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Command extends Model
 {
-    protected $fillable = [
-        'user_id',
-        'device_id',
-        'command_id',
-        'is_automation',
-    ];
-
-    public function user(): BelongsTo
+    public function device(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Device::class);
     }
 
     protected function casts(): array
     {
         return [
-            'is_automation' => 'boolean',
+            'isAutomation' => 'boolean',
         ];
     }
 }

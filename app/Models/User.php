@@ -6,18 +6,13 @@ namespace App\Models;
 use App\Exceptions\ConnectException;
 use App\Services\ConnectLoginService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
-
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
 
     protected $hidden = [
         'password',
@@ -60,9 +55,9 @@ class User extends Authenticatable
         return 'bearer-token:' . $this->id;
     }
 
-    public function commands(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function sites(): BelongsToMany
     {
-        return $this->hasMany(Command::class);
+        return $this->belongsToMany(Site::class);
     }
 
 }

@@ -105,4 +105,14 @@ class Connect extends BaseConnect
             return new FavoriteCommand($command, $originalCommand, $parentDevice);
         });
     }
+
+    public static function directGetDevicesStates(Collection|array|int $deviceIds): Collection
+    {
+        if (is_int($deviceIds)) $deviceIds = [$deviceIds];
+        if ($deviceIds instanceof Collection) $deviceIds = $deviceIds->toArray();
+
+        $instance = app(self::class);
+        return collect($instance->apiGET(Endpoints::DEVICE_STATUS->devices($deviceIds)))
+            ->transform(fn($status) => new DeviceStatus($status));
+    }
 }

@@ -3,7 +3,10 @@
 namespace App\Providers;
 
 use App\Services\Connect;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,5 +26,24 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->environment('production')) {
             URL::forceScheme('https');
         }
+
+        $this->useDatabaseProtection();
+        $this->useStrictModels();
+
+        Vite::usePrefetchStrategy('aggressive');
+
+    }
+
+    private function useDatabaseProtection(): void
+    {
+        DB::prohibitDestructiveCommands(
+            $this->app->isProduction(),
+        );
+    }
+
+    private function useStrictModels(): void
+    {
+        Model::shouldBeStrict();
+        Model::unguard();
     }
 }

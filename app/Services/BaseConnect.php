@@ -103,4 +103,9 @@ abstract class BaseConnect
                     });
             });
     }
+
+    public function getRawSites()
+    {
+        return $this->connectSitesResponse;
+    }
 }

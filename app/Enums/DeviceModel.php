@@ -2,6 +2,8 @@
 
 namespace App\Enums;
 
+use Illuminate\Support\Collection;
+
 enum DeviceModel: int
 {
     case QBE = 18;
@@ -28,5 +30,12 @@ enum DeviceModel: int
     public function isCommandable(): bool
     {
         return $this->canHaveCommands() || $this->isAutomation();
+    }
+
+    public static function commandables(): Collection
+    {
+        return collect(self::cases())
+            ->filter(fn($case) => $case->isCommandable())
+            ->flatten();
     }
 }
