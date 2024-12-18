@@ -2,29 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\SyncConnectAction;
-use App\Actions\UserSitesWithDevicesAction;
-use App\Services\Connect;
+use App\Services\ConnectService;
 
 class TestLocalController extends Controller
 {
     public function __invoke()
     {
-        if (!auth()->check()) {
-            auth()->loginUsingId(1);
-        }
-
-        dd(
-            SyncConnectAction::make(),
-//            UserSitesWithDevicesAction::getTree(false)
-        );
-
-
-        return 'Success';
-        $service = Connect::getSitesTree();
-
+        auth()->loginUsingId(2);
         dump(
-            $service,
+            ConnectService::make()->getTree(true),
         );
 
         return 'Success';

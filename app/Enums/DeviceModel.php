@@ -10,6 +10,7 @@ enum DeviceModel: int
     case RSLV = 10;
     case IO = 26;
     case ZN7 = 60;
+    case XTS = 33;
 
     public function canHaveCommands(): bool
     {
@@ -30,6 +31,11 @@ enum DeviceModel: int
     public function isCommandable(): bool
     {
         return $this->canHaveCommands() || $this->isAutomation();
+    }
+
+    public function isNotCommandable(): bool
+    {
+        return !self::isCommandable();
     }
 
     public static function commandables(): Collection

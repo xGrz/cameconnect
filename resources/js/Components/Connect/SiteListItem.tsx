@@ -10,11 +10,13 @@ interface SiteListItemProps {
 
 export default function SiteListItem({site}: SiteListItemProps) {
 
+    console.log(site);
+    return <>d</>
     return (
         <Box sx={{background: blue[600], padding: 1}}>
             <Typography variant="h2" component="h2">{site.name}</Typography>
-            {site.children.length > 0 && site.children.map((item, index) =>
-                <DeviceTreeItem device={item} key={index}/>
+            {site.devices.length > 0 && site.devices.map((item) =>
+                <DeviceTreeItem device={item} key={item.id}/>
             )}
         </Box>
     );

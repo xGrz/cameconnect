@@ -12,6 +12,7 @@ return new class extends Migration {
             $table->foreignId('device_id')->constrained();
             $table->boolean('automation');
             $table->integer('command');
+            $table->integer('output_id')->nullable();
             $table->string('label')->nullable();
             $table->string('system_name')->nullable();
             $table->timestamps();

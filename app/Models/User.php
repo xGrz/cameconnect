@@ -2,17 +2,19 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Exceptions\ConnectException;
-use App\Services\ConnectLoginService;
+use App\Interfaces\ConnectUser;
+use App\Traits\WithConnectUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 
-class User extends Authenticatable
+class User extends Authenticatable implements ConnectUser
 {
-    use HasFactory, Notifiable;
+    use HasFactory;
+    use Notifiable;
+    use WithConnectUser;
 
     protected $hidden = [
         'password',
@@ -29,35 +31,20 @@ class User extends Authenticatable
         ];
     }
 
-    /**
-     * @throws ConnectException
-     */
-    public function getBearerToken(): ?string
-    {
-        if (empty($this->connect_username) || empty($this->connect_password)) {
-            throw new ConnectException('Login credentials are empty');
-        }
-        return cache()
-            ->remember(
-                self::getCacheKeyForBearerToken(),
-                7190,
-                fn() => ConnectLoginService::login($this->connect_username, $this->connect_password)->getBearer()
-            );
-    }
-
-    public function forgetBearerToken(): bool
-    {
-        return cache()->forget(self::getCacheKeyForBearerToken());
-    }
-
-    private function getCacheKeyForBearerToken(): string
-    {
-        return 'bearer-token:' . $this->id;
-    }
-
     public function sites(): BelongsToMany
     {
         return $this->belongsToMany(Site::class);
+    }
+
+    public function getUserDevices(): Collection
+    {
+        $sites = $this->sites->pluck('id')->toArray();
+        return Device::whereIn('site_id', $sites)->get();
+    }
+
+    public function getUserDevicesIds(): array
+    {
+        return $this->getUserDevices()->pluck('id')->toArray();
     }
 
 }

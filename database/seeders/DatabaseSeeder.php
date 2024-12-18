@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
                 'connect_username' => config('cameconnect.username'),
                 'connect_password' => config('cameconnect.password'),
             ]);
+
         }
     }
 }

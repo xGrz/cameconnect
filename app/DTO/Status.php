@@ -7,19 +7,19 @@ use App\DTO\State\OutputState;
 use App\DTO\State\Command;
 use Illuminate\Support\Collection;
 
-class DeviceStatus
+class Status
 {
     public int $id;
     public bool $online;
     public Collection $states;
-    public object $apiStateResponse;
+    public object $rawResponse;
 
 
     public function __construct(object $status)
     {
         $this->id = $status->Id;
         $this->online = $status->Online;
-        $this->apiStateResponse = $status;
+        $this->rawResponse = $status;
         $this->states = collect();
         collect($status->States)
             ->each(function ($state) {

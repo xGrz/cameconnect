@@ -11,7 +11,7 @@ interface ISiteTree {
     id: number;
     name: string;
     description: string;
-    children: IDeviceTree[];
+    devices: IDeviceTree[];
 }
 
 interface IDeviceTree {

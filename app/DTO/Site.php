@@ -4,7 +4,7 @@ namespace App\DTO;
 
 use App\DTO\State\ConnectCommand;
 use App\DTO\State\ConnectDevice;
-use App\Services\Connect;
+use App\Services\ConnectService;
 use Illuminate\Support\Collection;
 
 class Site
@@ -62,13 +62,13 @@ class Site
         $commands = collect();
         $this
             ->getCommandableDevices()
-            ->each(fn($device) => collect(Connect::withoutSites()->deviceCommands($device->id))
+            ->each(fn($device) => collect(ConnectService::make()->deviceCommands($device->id))
                 ->each(fn($command) => $commands->push(new ConnectCommand($command, $device->id, $device->isAutomation)))
             );
 
         $this
             ->getAutomationDevices()
-            ->each(fn($automation) => collect(Connect::withoutSites()->automationCommands($automation->id))
+            ->each(fn($automation) => collect(ConnectService::make()->automationCommands($automation->id))
                 ->each(fn($command) => $commands->push(new ConnectCommand($command, $automation->id, $automation->isAutomation)))
             );
         return $commands;

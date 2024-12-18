@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\Connect;
+use App\Services\ConnectService;
 use Inertia\Inertia;
 
 class UserDashboardController extends Controller
@@ -11,10 +11,7 @@ class UserDashboardController extends Controller
     {
 
         return Inertia::render('User/Dashboard', [
-            'commands' => Inertia::defer(
-                fn() => Connect::favoriteCommands(),
-
-            )
+            'commands' => []
         ]);
     }
 }

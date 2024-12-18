@@ -2,7 +2,7 @@
 
 namespace App\DTO\State;
 
-use App\DTO\DeviceStatus;
+use App\DTO\Status;
 use App\Enums\DeviceModel;
 use Illuminate\Support\Collection;
 
@@ -30,7 +30,7 @@ class ConnectDevice
 
     public Collection $commands;
 
-    public function __construct(object $device, ?DeviceStatus $status = null)
+    public function __construct(object $device, ?Status $status = null)
     {
         $this->commands = collect();
         $this->id = $device->Id;

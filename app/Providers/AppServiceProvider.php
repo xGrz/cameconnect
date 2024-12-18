@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Services\Connect;
+use App\Services\ConnectService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
@@ -18,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
             $this->app->register(TelescopeServiceProvider::class);
         }
 
-        $this->app->singleton(Connect::class, fn() => new Connect());
+        $this->app->singleton(ConnectService::class, fn() => new ConnectService());
     }
 
     public function boot(): void
