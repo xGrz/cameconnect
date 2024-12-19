@@ -12,6 +12,7 @@ interface DeviceListItemProps {
 
 
 export default function DeviceListItem({device, level = 1}: DeviceListItemProps) {
+
     return (
         <>
             <Box sx={{paddingY: 1, paddingLeft: level * 1.5}}>
@@ -23,7 +24,7 @@ export default function DeviceListItem({device, level = 1}: DeviceListItemProps)
                         alignItems: "center",
                     }}
                 >
-                    <DeviceIcon iconName={device.iconName} online={device.online}/>
+                    <DeviceIcon iconName={device.icon_name} online={true}/>
                     <Box>
                         <Typography variant="h5" component="h2">{device.name}</Typography>
                         <Typography variant="body2" component="div">{device.description}</Typography>
@@ -43,9 +44,9 @@ export default function DeviceListItem({device, level = 1}: DeviceListItemProps)
                     )}
                 </Stack>
             </Box>
-            {device.children.length > 0 && (
+            {device.devices.length > 0 && (
                 <Box>
-                    {device.children.map((device) => (
+                    {device.devices.map((device) => (
                         <DeviceListItem device={device} level={level + 1} key={device.id}/>
                     ))}
                 </Box>

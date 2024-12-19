@@ -10,8 +10,6 @@ interface SiteListItemProps {
 
 export default function SiteListItem({site}: SiteListItemProps) {
 
-    console.log(site);
-    return <>d</>
     return (
         <Box sx={{background: blue[600], padding: 1}}>
             <Typography variant="h2" component="h2">{site.name}</Typography>

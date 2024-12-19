@@ -15,25 +15,22 @@ interface ISiteTree {
 }
 
 interface IDeviceTree {
-    categoryId: number;
-    children: IDeviceTree[];
-    commandable: boolean;
+    category_id: number;
     commands: IDeviceCommand[];
+    connected_thru: number|null
     description: string;
-    iconName: string;
+    icon_name: string;
     id: number;
     inputs: 0;
-    isAutomation: boolean;
-    keyCode: string;
-    model: number;
-    modelId: number;
-    modelName: string;
+    keycode: string;
+    local_inputs: number;
+    local_outputs: number;
+    model_description: string;
+    model_id: number;
+    model_name: number;
     name: string;
-    online: boolean;
-    outputs: number;
-    parentId: number|null;
-    remotesMax: number;
-    states: any;
+    remotes_max: number;
+    devices: IDeviceTree[];
 }
 
 interface IDeviceCommand {

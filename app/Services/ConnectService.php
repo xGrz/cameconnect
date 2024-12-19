@@ -5,7 +5,6 @@ namespace App\Services;
 use App\DTO\Status;
 use App\Enums\Endpoints;
 use App\Models\Device;
-use App\Models\Site;
 use Illuminate\Support\Collection;
 
 class ConnectService extends BaseCameConnect
@@ -36,15 +35,26 @@ class ConnectService extends BaseCameConnect
         return true;
     }
 
-    public function getTree(bool $asArray = false): Collection|array
+    public function getTree(): array
     {
         $this->user->loadMissing('sites.devices.commands');
+        $sites = $this->user->sites->map(function ($site) {
+            $site = $site->toArray();
+            $devices = $site['devices'];
+            unset($site['devices'], $site['pivot'], $site['created_at'], $site['updated_at']);
+            $site['devices'] = self::buildTree($devices)->toArray();
+            return $site;
+        });
+        return $sites->toArray();
+    }
 
-        $sites = $this
-            ->user
-            ->sites
-            ->transform(fn(Site $site) => $site->toTree(true));
-
-        return $asArray ? $sites->toArray() : $sites;
+    private function buildTree(array $devices, ?int $parentId = null): Collection
+    {
+        return collect($devices)->filter(fn($item) => $item['connected_thru'] === $parentId)
+            ->map(function ($item) use ($devices) {
+                unset($item['created_at'], $item['updated_at']);
+                $item['devices'] = self::buildTree($devices, $item['id'])->values()->toArray();
+                return $item;
+            });
     }
 }
