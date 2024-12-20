@@ -9,9 +9,9 @@ interface DashboardCommandsProps extends PageProps {
 }
 
 export default () => {
-
     const {commands} = usePage<DashboardCommandsProps>().props;
 
+    console.log(commands);
     return (
         <List>
             {commands.map((command, index) => (

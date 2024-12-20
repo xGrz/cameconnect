@@ -10,7 +10,7 @@ class Site extends Model
 {
     public $incrementing = false;
 
-    public function user(): BelongsToMany
+    public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class);
     }

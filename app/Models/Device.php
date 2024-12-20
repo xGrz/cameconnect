@@ -20,6 +20,13 @@ class Device extends Model
         return $this->belongsTo(Site::class);
     }
 
+    public function parent_device(): BelongsTo
+    {
+        return $this
+            ->belongsTo(Device::class, 'connected_thru')
+            ->with('parent_device');
+    }
+
     public function devices(): HasMany
     {
         return $this->hasMany(Device::class, 'connected_thru', 'id');

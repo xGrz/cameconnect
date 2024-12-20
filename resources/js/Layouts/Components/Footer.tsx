@@ -1,10 +1,22 @@
-import Box from "@mui/material/Box";
+import {BottomNavigation, BottomNavigationAction} from "@mui/material";
+import {Home, Language, Settings} from "@mui/icons-material";
+import React from "react";
 
 export default function Footer() {
+    const [value, setValue] = React.useState(0);
+
+
     return (
-        <Box sx={{background: 'black', textAlign: "center", color: 'white', padding: 2}}>
-            <strong>myCAME</strong> Connect
-        </Box>
+        <BottomNavigation
+            value={value}
+            onChange={(event, newValue) => {
+                setValue(newValue);
+            }}
+        >
+            <BottomNavigationAction label="Start" icon={<Home/>}/>
+            <BottomNavigationAction label="Sites" icon={<Language/>}/>
+            <BottomNavigationAction label="Settings" icon={<Settings/>}/>
+        </BottomNavigation>
     );
 
 }

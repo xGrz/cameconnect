@@ -1,22 +1,20 @@
 import Toolbar from "@mui/material/Toolbar";
 import * as React from "react";
 import Box from "@mui/material/Box";
-import {blue} from "@mui/material/colors";
-import LogoutButton from "@/Components/Auth/LogoutButton";
-import SettingsButton from "@/Components/SettingsButton";
 import AppLogo from "@/Components/AppLogo";
-import SitesTreeButton from "@/Components/Connect/SitesTreeButton";
+import {useTheme} from "@mui/material";
 
 
 export default function Header() {
+    const theme = useTheme()
 
     return (
-        <Box sx={{backgroundColor: blue[600], color: 'white'}}>
+        <Box sx={{backgroundColor: theme.palette.background.default, color: 'white'}}>
             <Toolbar>
-                <SitesTreeButton />
-                <AppLogo />
-                <SettingsButton/>
-                <LogoutButton/>
+                {/*<SitesTreeButton />*/}
+                <AppLogo/>
+                {/*<SettingsButton/>*/}
+                {/*<LogoutButton/>*/}
             </Toolbar>
         </Box>
     );

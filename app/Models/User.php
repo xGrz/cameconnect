@@ -47,4 +47,9 @@ class User extends Authenticatable implements ConnectUser
         return $this->getUserDevices()->pluck('id')->toArray();
     }
 
+    public function favoritesCommands(): BelongsToMany
+    {
+        return $this->belongsToMany(Command::class);
+    }
+
 }

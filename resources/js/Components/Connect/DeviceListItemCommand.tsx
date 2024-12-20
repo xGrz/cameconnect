@@ -24,11 +24,7 @@ export default function DeviceListItemCommand({command}: DeviceListItemCommandPr
 
     function handleClick(event: React.MouseEvent) {
         event.preventDefault();
-        router.post(route('device.command', {
-                commandId: command.commandId,
-                deviceId: command.deviceId,
-                isAutomation: command.isAutomation ? 1 : 0,
-            }),
+        router.post(route('device.command', { command: command.id}),
             {},
             {
                 preserveScroll: true,

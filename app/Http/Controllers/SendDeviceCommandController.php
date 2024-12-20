@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\CameConnect;
+use App\Models\Command;
+use App\Services\ConnectService;
 
 class SendDeviceCommandController extends Controller
 {
-    public function __invoke(int $deviceId, int $commandId, bool $isAutomation)
+    public function __invoke(Command $command)
     {
-        $status = $isAutomation
-            ? CameConnect::make(auth()->user())->sendAutomationCommand($deviceId, $commandId)->Success
-            : CameConnect::make(auth()->user())->sendDeviceCommand($deviceId, $commandId)->Success;
+        $command->loadMissing(['device.site.users' => fn($query) => $query->where('id', auth()->id())]);
+        $user = $command->device?->site?->users?->first();
+        ConnectService::make($user)->sendCommand($command->device, $command->command);
     }
 }

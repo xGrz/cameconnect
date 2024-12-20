@@ -34,15 +34,17 @@ interface IDeviceTree {
 }
 
 interface IDeviceCommand {
-    commandId: number;
-    deviceId: number;
-    isAutomation: boolean;
+    id: number;
+    device_id: number;
+    automation: boolean;
+    command: number;
     label: string;
+    system_name: string;
 }
 
 interface IFavoriteCommand {
     command: number;
-    device: number;
+    device: IDevice;
     deviceName: string;
     deviceDescription: string;
     iconName: string;
