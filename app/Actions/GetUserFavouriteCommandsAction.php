@@ -43,7 +43,7 @@ class GetUserFavouriteCommandsAction
         if (is_null($path)) $path = new Collection();
         $path->push($device);
         if ($device->parent_device) $path = self::buildDevicePath($device->parent_device, $path);
-        return $path;
+        return $path->reverse()->values();
     }
 
     private function buildDevicesCommands(Collection $devices, Collection $commands): Collection

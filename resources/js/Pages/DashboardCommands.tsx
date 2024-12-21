@@ -1,23 +1,23 @@
-import {List, ListItem} from "@mui/material";
+import {Box} from "@mui/material";
 import React from "react";
-import {IFavoriteCommand} from "@/types/inertia";
 import {usePage} from "@inertiajs/react";
 import {PageProps} from '@inertiajs/core';
+import {IDeviceFavoriteCommand} from "@/types/inertia";
+import DashboardFavouriteCommandsItem from "@/Pages/DashboardFavouriteCommandsItem";
 
 interface DashboardCommandsProps extends PageProps {
-    commands: IFavoriteCommand[];
+    commands: IDeviceFavoriteCommand[];
 }
 
 export default () => {
     const {commands} = usePage<DashboardCommandsProps>().props;
 
-    console.log(commands);
     return (
-        <List>
-            {commands.map((command, index) => (
-                <ListItem key={index}>{command.deviceName} {command.label}</ListItem>
+        <Box>
+            {commands.map((device) => (
+                <DashboardFavouriteCommandsItem device={device} key={device.id}/>
             ))}
-        </List>
+        </Box>
     );
 
 

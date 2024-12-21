@@ -17,7 +17,7 @@ interface ISiteTree {
 interface IDeviceTree {
     category_id: number;
     commands: IDeviceCommand[];
-    connected_thru: number|null
+    connected_thru: number | null
     description: string;
     icon_name: string;
     id: number;
@@ -42,13 +42,22 @@ interface IDeviceCommand {
     system_name: string;
 }
 
-interface IFavoriteCommand {
-    command: number;
-    device: IDevice;
-    deviceName: string;
-    deviceDescription: string;
-    iconName: string;
-    isAutomation: boolean;
-    label: string;
+interface IDeviceFavoriteCommand {
+    commands: IFavoriteCommand[];
+    description: string;
+    id: number;
+    name: string;
+    path: IFavouriteCommandPathItem[]
+}
 
+interface IFavoriteCommand {
+    commandId: number;
+    label: string;
+    system_name: string|null;
+}
+
+interface IFavouriteCommandPathItem {
+    description: string;
+    deviceId: number;
+    name: string;
 }
